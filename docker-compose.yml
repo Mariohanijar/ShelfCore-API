@@ -1,0 +1,10 @@
+version: '1'
+services:
+  api-solid-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=shelfcore
+      - POSTGRESQL_PASSWORD=shelfcore
+      - POSTGRESQL_DATABASE=shelfcore
