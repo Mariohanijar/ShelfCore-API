@@ -1,8 +1,6 @@
 import fastify from "fastify";
-import { PrismaClient } from "./generated/prisma/index.js";
-import {z} from 'zod'
+import { appRoutes } from "./routes/user-routes.js";
 
 export const app = fastify()
 
-const prisma = new PrismaClient()
-
+app.register(appRoutes)
