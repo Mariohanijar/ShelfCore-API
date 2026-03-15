@@ -8,3 +8,4 @@ services:
       - POSTGRESQL_USERNAME=shelfcore
       - POSTGRESQL_PASSWORD=shelfcore
       - POSTGRESQL_DATABASE=shelfcore
+      - TZ=UTC
