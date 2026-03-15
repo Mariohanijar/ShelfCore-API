@@ -1,24 +1,13 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
 import { registerServices } from "../services/user/register-user-service.js";
 import { getAllUsers } from "../services//user/get-users-service.js";
 import { getUserById } from "../services/user/get-users-by-id-service.js";
 import { deleteUserById } from "../services/user/delete-user-by-id-service.js";
 import { updateUserById } from "../services/user/update-user-by-id-service.js";
-import { updateUserBodySchema, userIdSchemaParams } from "../schemas/users/user-params-schema.js"
+import { registerBodySchema, updateUserBodySchema, userIdSchemaParams } from "../schemas/users/user-params-schema.js"
 
-export async function register(request: FastifyRequest, reply: FastifyReply) {
-    const registerBodySchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string(),
-    phone: z.string(),
-    address: z.string(),
-    birthDate: z.coerce.date()
-    })
-
+export async function register(request: FastifyRequest, reply: FastifyReply) { 
     const body = registerBodySchema.parse(request.body)
-
     try {
         await registerServices(body)
     } catch (error) {

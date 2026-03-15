@@ -12,3 +12,12 @@ export const updateUserBodySchema = z.object({
   address: z.string().optional(),
   birthDate: z.coerce.date().optional()
 })
+
+export const registerBodySchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z.string(),
+    phone: z.string(),
+    address: z.string(),
+    birthDate: z.coerce.date()
+    })
