@@ -5,6 +5,7 @@ import { getUserById } from "../services/user/get-users-by-id-service.js";
 import { deleteUserById } from "../services/user/delete-user-by-id-service.js";
 import { updateUserById } from "../services/user/update-user-by-id-service.js";
 import { registerBodySchema, updateUserBodySchema, userIdSchemaParams } from "../schemas/users/user-params-schema.js"
+import { authenticateUserUseCase } from "../services/auth/authenticate-user-service.js";
 
 export async function register(request: FastifyRequest, reply: FastifyReply) { 
     const body = registerBodySchema.parse(request.body)
@@ -30,6 +31,14 @@ export async function getUser(request: FastifyRequest, reply: FastifyReply) {
     return reply.status(200).send(user)
 }
 
+export async function getMe(request: FastifyRequest, reply: FastifyReply) {
+    const id = request.user.id
+    const user = await getUserById(id)
+
+    return reply.status(200).send(user)
+
+}
+
 export async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
 
     const {id} = userIdSchemaParams.parse(request.params)
@@ -46,3 +55,6 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply) {
 
   return reply.status(200).send(user)
 }
+
+
+

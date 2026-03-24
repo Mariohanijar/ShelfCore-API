@@ -21,3 +21,5 @@ export const registerBodySchema = z.object({
     address: z.string(),
     birthDate: z.coerce.date()
     })
+
+    
