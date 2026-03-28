@@ -1,3 +1,4 @@
+import { AppError } from "../../errors/app-error.js";
 import { prisma } from "../../lib/prisma.js";
 
 interface RegisterLoanSchema {
@@ -11,7 +12,7 @@ export async function loanBookUseCase({bookId,userId}: RegisterLoanSchema) {
   })
 
   if (!book) {
-    throw new Error("Book not found")
+    throw new AppError("Book not found",400)
   }
 
   const user = await prisma.user.findUnique({
@@ -19,7 +20,7 @@ export async function loanBookUseCase({bookId,userId}: RegisterLoanSchema) {
   })
 
    if (!user) {
-    throw new Error("User not found")
+    throw new AppError("User not found",400)
   }
 
   const alreadyLoaned = await prisma.loan.count({
@@ -31,7 +32,7 @@ export async function loanBookUseCase({bookId,userId}: RegisterLoanSchema) {
   })
 
   if(alreadyLoaned > 0){
-    throw new Error("Book already loaned")
+    throw new AppError("Book already loaned",409)
   }
 
   const isUserHaveMoreThanTwoBooks = await prisma.loan.count({
@@ -42,11 +43,11 @@ export async function loanBookUseCase({bookId,userId}: RegisterLoanSchema) {
   })
 
   if(isUserHaveMoreThanTwoBooks >= 2){
-    throw new Error("The user cannot have more than 2 books")
+    throw new AppError("The user cannot have more than 2 books", 409)
   }
 
   if(book.availableQuantity <= 0){
-    throw new Error("the book is out of the stock")
+    throw new AppError("the book is out of the stock", 400)
   }
 
 

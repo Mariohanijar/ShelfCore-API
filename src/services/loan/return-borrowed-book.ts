@@ -1,3 +1,4 @@
+import { AppError } from "../../errors/app-error.js"
 import { prisma } from "../../lib/prisma.js"
 
 
@@ -7,7 +8,7 @@ export async function returnBorrowedBookUseCase(id: string) {
   })
 
   if (!loan) {
-    throw new Error("loan not found")
+    throw new AppError("loan not found",400)
   }
 
      const isLoaned = await prisma.loan.count({
@@ -18,7 +19,7 @@ export async function returnBorrowedBookUseCase(id: string) {
   })
 
   if(isLoaned <= 0){
-    throw new Error("Book is not loaned")
+    throw new AppError("Book is not loaned",409)
   }
   
   

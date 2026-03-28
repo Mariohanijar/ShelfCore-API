@@ -1,16 +1,17 @@
 import jwt from "jsonwebtoken"
 import { env } from "../env/index.js"
 import type { FastifyReply, FastifyRequest } from "fastify"
+import { AppError } from "../errors/app-error.js"
 
 export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
   const authHeader = request.headers.authorization
 
   if (!authHeader) {
-    return reply.status(401).send({ message: "Unauthorized" })
+    throw new AppError('unauthorized',401)
   }
 
   if (!authHeader.startsWith("Bearer ")) {
-    return reply.status(401).send({ message: "Invalid token format" })
+    throw new AppError('Invalid token format',401)
   }
 
   const token = authHeader.replace("Bearer ", "")
@@ -23,6 +24,6 @@ export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
       role: decoded.role
     }
   } catch (err) {
-    return reply.status(401).send({ message: "Invalid or expired token" })
+    throw new AppError("Invalid or expired token", 401)
   }
 }

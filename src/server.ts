@@ -8,3 +8,16 @@ app.listen({
     console.log("http server running")
 })
 
+app.setErrorHandler((error, request, reply) => {
+  if (error instanceof AppError) {
+    return reply.status(error.statusCode).send({
+      message: error.message
+    })
+  }
+
+  console.error(error)
+
+  return reply.status(500).send({
+    message: "Internal server error"
+  })
+})

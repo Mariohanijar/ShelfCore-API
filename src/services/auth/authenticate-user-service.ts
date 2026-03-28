@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import { prisma } from "../../lib/prisma.js"
 import jwt from "jsonwebtoken"
 import {env} from '../../env/index.js'
+import { AppError } from "../../errors/app-error.js"
 
 interface AuthenticateUserRequest{
     email: string,
@@ -18,13 +19,13 @@ export async function authenticateUserUseCase({email, password}: AuthenticateUse
     })
     
     if(!user){
-        throw new Error("User not exists")
+        throw new AppError("User not exists", 400)
     }
 
     const isUserPasswordCorrect = await bcrypt.compare(password, user.password)
 
     if(!isUserPasswordCorrect){
-        throw new Error("Incorrect email or password")
+        throw new AppError("Incorrect email or password", 400)
     }
 
     const token = jwt.sign(

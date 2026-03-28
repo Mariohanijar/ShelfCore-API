@@ -10,24 +10,15 @@ import { registerByAdminUseCase } from "../services/user/register-admin-user-ser
 
 export async function register(request: FastifyRequest, reply: FastifyReply) { 
     const body = registerBodySchema.parse(request.body)
-    try {
-        await registerServices(body)
-    } catch (error) {
-        return reply.status(409).send()
-    }
+    await registerServices(body)
 
     return reply.status(201).send()
 }
 
 export async function registerAdmin(request: FastifyRequest, reply: FastifyReply) {
     const body = registerAdminBodySchema.parse(request.body)
-    try {
-        await registerByAdminUseCase(body)
-    } catch (error) {
-        console.log(error)
-        return reply.status(409).send()
-    }
-     return reply.status(201).send()
+    await registerByAdminUseCase(body)
+    return reply.status(201).send()
 }
 
 export async function getUsers(request: FastifyRequest, reply: FastifyReply) {

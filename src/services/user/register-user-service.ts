@@ -1,5 +1,6 @@
 import { hash } from "bcryptjs"
 import {prisma} from "../../lib/prisma.js"
+import { AppError } from "../../errors/app-error.js"
 
 interface RegisterUseCaseRequest{
     name: string,
@@ -21,7 +22,7 @@ export async function registerServices({name,email,password,phone,address,birthD
     })
 
     if(userWithSameEmail){
-        throw new Error("Email already exists")
+        throw new AppError("Email already exists",409)
     }
 
     await prisma.user.create({

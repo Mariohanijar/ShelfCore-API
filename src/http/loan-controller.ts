@@ -10,59 +10,34 @@ import { renewLoanUseCase } from "../services/loan/renew-loan-service.js";
 
 export async function createLoan(request: FastifyRequest, reply: FastifyReply) {
     const body = userAndBookIdSchema.parse(request.body)
-
-    try {
-            await loanBookUseCase(body)
-        } catch (error) {
-            return reply.status(409).send(error)
-        }
-    
-        return reply.status(201).send()
-    }
+    await loanBookUseCase(body)
+    return reply.status(201).send()
+}
 
 export async function returnBook(request: FastifyRequest, reply: FastifyReply) {
     const {id} = loanIdSchema.parse(request.params)
-
-    try {
-        await returnBorrowedBookUseCase(id)
-    } catch (error) {
-        return reply.status(409).send(error)
-    }
-
-     return reply.status(201).send()
+    await returnBorrowedBookUseCase(id)
+    return reply.status(201).send()
 }
 
 export async function getLoansByUserId(request: FastifyRequest, reply: FastifyReply) {
     const {user_id} = userIdLoanSchema.parse(request.params)
-
-    try {
-       const loans = await getLoansByUserIdUseCase(user_id)
-        return reply.status(200).send(loans)
-    } catch (error) {
-        return reply.status(409).send(error)
-    }   
+    const loans = await getLoansByUserIdUseCase(user_id)
+    return reply.status(200).send(loans)
 }
 
 export async function getAllLoans(request: FastifyRequest, reply: FastifyReply) {
     const loans = await getAllLoansUseCase()
-    
     reply.status(200).send(loans)
 }
 
 export async function getAllLateLoans(request: FastifyRequest, reply: FastifyReply) {
     const lateLoans = await getAllLateLoansUseCase()
-
     reply.status(200).send({"count": lateLoans.length,lateLoans})
 }
 
 export async function renewLoan(request: FastifyRequest, reply: FastifyReply) {
     const {id} = loanIdSchema.parse(request.params)
-
-    try {
-        await renewLoanUseCase(id)
-    } catch (error) {
-        reply.status(401).send(error)
-    }
-
+    await renewLoanUseCase(id)
     reply.status(201)
 }
