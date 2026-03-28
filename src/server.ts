@@ -1,4 +1,5 @@
 import { app } from "./app.js";
+import { AppError } from "./errors/app-error.js";
 
 app.listen({
     host: '0.0.0.0',
@@ -6,3 +7,4 @@ app.listen({
 }).then(()=> {
     console.log("http server running")
 })
+

@@ -1,5 +1,6 @@
 import { hash } from "bcryptjs"
 import {prisma} from "../../lib/prisma.js"
+import type { Role } from "../../generated/prisma/index.js"
 
 interface RegisterUseCaseRequest{
     name: string,
@@ -8,9 +9,10 @@ interface RegisterUseCaseRequest{
     phone: string,
     address: string,
     birthDate: Date
+    role: Role
 }
 
-export async function registerServices({name,email,password,phone,address,birthDate}:RegisterUseCaseRequest) {
+export async function registerByAdminUseCase({name,email,password,phone,address,birthDate,role}:RegisterUseCaseRequest) {
     
     const password_hash = await hash(password,6)
 
@@ -32,6 +34,7 @@ export async function registerServices({name,email,password,phone,address,birthD
             address,
             phone,
             birthDate,
+            role
         },
     })
 }

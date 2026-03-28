@@ -19,7 +19,15 @@ export const registerBodySchema = z.object({
     password: z.string(),
     phone: z.string(),
     address: z.string(),
-    birthDate: z.coerce.date()
+    birthDate: z.coerce.date(),
     })
 
-    
+export const registerAdminBodySchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z.string(),
+    phone: z.string(),
+    address: z.string(),
+    birthDate: z.coerce.date(),
+    role: z.enum(['ADMIN','USER']).default('USER')
+    })

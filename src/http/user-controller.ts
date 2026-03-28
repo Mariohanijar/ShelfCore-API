@@ -4,8 +4,9 @@ import { getAllUsers } from "../services//user/get-users-service.js";
 import { getUserById } from "../services/user/get-users-by-id-service.js";
 import { deleteUserById } from "../services/user/delete-user-by-id-service.js";
 import { updateUserById } from "../services/user/update-user-by-id-service.js";
-import { registerBodySchema, updateUserBodySchema, userIdSchemaParams } from "../schemas/users/user-params-schema.js"
+import { registerAdminBodySchema, registerBodySchema, updateUserBodySchema, userIdSchemaParams } from "../schemas/users/user-params-schema.js"
 import { authenticateUserUseCase } from "../services/auth/authenticate-user-service.js";
+import { registerByAdminUseCase } from "../services/user/register-admin-user-service.js";
 
 export async function register(request: FastifyRequest, reply: FastifyReply) { 
     const body = registerBodySchema.parse(request.body)
@@ -16,6 +17,17 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     }
 
     return reply.status(201).send()
+}
+
+export async function registerAdmin(request: FastifyRequest, reply: FastifyReply) {
+    const body = registerAdminBodySchema.parse(request.body)
+    try {
+        await registerByAdminUseCase(body)
+    } catch (error) {
+        console.log(error)
+        return reply.status(409).send()
+    }
+     return reply.status(201).send()
 }
 
 export async function getUsers(request: FastifyRequest, reply: FastifyReply) {
