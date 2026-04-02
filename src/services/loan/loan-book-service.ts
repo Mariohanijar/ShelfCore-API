@@ -50,6 +50,18 @@ export async function loanBookUseCase({bookId,userId}: RegisterLoanSchema) {
     throw new AppError("the book is out of the stock", 400)
   }
 
+  const today = new Date()
+  const isUserHaveAOverdueBook = await prisma.loan.count({
+    where: {
+      user_id: userId,
+      returnDate: {
+        lt: today
+      }
+    }
+  })
+  if(isUserHaveAOverdueBook >  0){
+    throw new AppError("The user has a overdue book",400)
+  }
 
   const returnDate = new Date()
   returnDate.setDate(returnDate.getDate() + 7) 

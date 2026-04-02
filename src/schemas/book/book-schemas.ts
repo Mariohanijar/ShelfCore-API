@@ -6,6 +6,10 @@ export const bookIdSchemaParams = z.object({
   id: z.string().uuid()
 })
 
+export const bookTitleSchemaParams = z.object({
+  title: z.string()
+})
+
 export const registerBodySchema = z.object({
     title: z.string(),
     author: z.string(),

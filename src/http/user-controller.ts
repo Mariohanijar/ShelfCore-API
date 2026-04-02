@@ -50,6 +50,13 @@ export async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
     return reply.status(204).send()
 }
 
+export async function deleteMe(request: FastifyRequest, reply: FastifyReply) {
+    const id = request.user.id
+    const user = await deleteUserById(id)
+
+    return reply.status(204).send()
+}
+
 export async function updateUser(request: FastifyRequest, reply: FastifyReply) {
   const { id } = userIdSchemaParams.parse(request.params)
   const body = updateUserBodySchema.parse(request.body)
@@ -57,6 +64,15 @@ export async function updateUser(request: FastifyRequest, reply: FastifyReply) {
   const user = await updateUserById({id,...body})
 
   return reply.status(200).send(user)
+}
+
+export async function updateMe(request: FastifyRequest, reply: FastifyReply) {
+    const id = request.user.id
+    const body = updateUserBodySchema.parse(request.body)
+
+    const user = await updateUserById({id,...body})
+
+    return reply.status(200).send(user)
 }
 
 
